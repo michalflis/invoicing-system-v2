@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 import pl.futurecollars.invoicing.model.Company;
 import pl.futurecollars.invoicing.repository.company.CompanyRepository;
 import pl.futurecollars.invoicing.repository.generic.GenericRepository;
 
 @AllArgsConstructor
-@Repository
+@Service
 public class CompanyService implements GenericRepository<Company> {
 
     private final CompanyRepository companyRepository;

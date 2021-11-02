@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 import pl.futurecollars.invoicing.model.Invoice;
 import pl.futurecollars.invoicing.repository.generic.GenericRepository;
 import pl.futurecollars.invoicing.repository.invoice.InvoiceRepository;
 
 @AllArgsConstructor
-@Repository
+@Service
 public class InvoiceService implements GenericRepository<Invoice> {
 
     private final InvoiceRepository invoiceRepository;
