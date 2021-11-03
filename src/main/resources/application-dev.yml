@@ -1,0 +1,20 @@
+logging:
+  level:
+    root: info
+    pl.futurecollars.invoicing: debug
+    org.springframework: warn
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL94Dialect
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: 1234
+    driver-class-name: org.postgresql.Driver
+  flyway:
+    enabled: true
