@@ -12,8 +12,6 @@ import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Stepwise
 
-import java.lang.reflect.Array
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
@@ -75,6 +73,18 @@ class CompanyControllerTest extends Specification {
         then:
         companies.size() > 0
         companies[0] == company
+    }
+
+    def "should return short list of companies"() {
+        when:
+        def response = mockMvc.perform(get("/companies/list"))
+                .andExpect(status().isOk())
+                .andReturn()
+                .response
+                .contentAsString
+
+        then:
+        response != null
     }
 
     def "should update company"() {

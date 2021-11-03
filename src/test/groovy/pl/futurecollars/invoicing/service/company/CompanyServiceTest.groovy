@@ -1,5 +1,6 @@
 package pl.futurecollars.invoicing.service.company
 
+import pl.futurecollars.invoicing.dto.mappers.CompanyListMapper
 import pl.futurecollars.invoicing.fixtures.CompanyFixture
 import pl.futurecollars.invoicing.repository.company.CompanyRepository
 import spock.lang.Specification
@@ -7,8 +8,9 @@ import spock.lang.Specification
 class CompanyServiceTest extends Specification {
 
     CompanyRepository companyRepository = Mock()
+    CompanyListMapper companyListMapper = Mock()
 
-    def companyService = new CompanyService(companyRepository)
+    def companyService = new CompanyService(companyRepository, companyListMapper)
     def company = CompanyFixture.company(1)
     def company2 = CompanyFixture.company(2)
     def company3 = CompanyFixture.company(3)

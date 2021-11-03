@@ -39,12 +39,12 @@ public class Invoice {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "issuer_id")
-    @ApiModelProperty(value = "Issuer Id", required = true, example = "123e4567-e89b-12d3-a456-426614174000")
+    @ApiModelProperty(value = "Issuer", required = true)
     private Company issuer;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "receiver_id")
-    @ApiModelProperty(value = "Receiver Id", required = true, example = "124e4567-f89b-12d3-a456-426614174000")
+    @ApiModelProperty(value = "Receiver", required = true)
     private Company receiver;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
