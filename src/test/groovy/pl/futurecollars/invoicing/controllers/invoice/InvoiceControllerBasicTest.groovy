@@ -75,6 +75,18 @@ class InvoiceControllerBasicTest extends Specification {
         invoices[0] == invoice
     }
 
+    def "should return short list of invoices"() {
+        when:
+        def response = mockMvc.perform(get("/invoices/list"))
+                .andExpect(status().isOk())
+                .andReturn()
+                .response
+                .contentAsString
+
+        then:
+        response != null
+    }
+
     def "should update invoice"() {
         given:
         updatedInvoice.setInvoiceId(invoice.getInvoiceId())

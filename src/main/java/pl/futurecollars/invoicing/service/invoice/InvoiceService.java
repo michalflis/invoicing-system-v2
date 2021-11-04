@@ -3,8 +3,11 @@ package pl.futurecollars.invoicing.service.invoice;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.futurecollars.invoicing.dto.InvoiceListDto;
+import pl.futurecollars.invoicing.dto.mappers.InvoiceListMapper;
 import pl.futurecollars.invoicing.model.Invoice;
 import pl.futurecollars.invoicing.repository.generic.GenericRepository;
 import pl.futurecollars.invoicing.repository.invoice.InvoiceRepository;
@@ -14,6 +17,7 @@ import pl.futurecollars.invoicing.repository.invoice.InvoiceRepository;
 public class InvoiceService implements GenericRepository<Invoice> {
 
     private final InvoiceRepository invoiceRepository;
+    private final InvoiceListMapper invoiceListMapper;
 
     @Override
     public Invoice save(Invoice invoice) {
@@ -30,6 +34,10 @@ public class InvoiceService implements GenericRepository<Invoice> {
         List<Invoice> invoiceList = new ArrayList<>();
         invoiceRepository.findAll().forEach(invoiceList::add);
         return invoiceList;
+    }
+
+    public List<InvoiceListDto> getList() {
+        return getAll().stream().map(invoiceListMapper::invoiceListToDto).collect(Collectors.toList());
     }
 
     @Override

@@ -1,5 +1,6 @@
 package pl.futurecollars.invoicing.service.invoice
 
+import pl.futurecollars.invoicing.dto.mappers.InvoiceListMapper
 import pl.futurecollars.invoicing.fixtures.CompanyFixture
 import pl.futurecollars.invoicing.fixtures.InvoiceEntryFixture
 import pl.futurecollars.invoicing.model.Invoice
@@ -22,7 +23,8 @@ class InvoiceServiceTest extends Specification {
     def invoice3 = new Invoice(UUID.randomUUID(), "invoice13", date, issuer, receiver2, entries)
     def invoiceUpdated = new Invoice(UUID.randomUUID(), "CCC", date, issuerUpdated, receiver, entries)
     InvoiceRepository invoiceRepository = Mock()
-    def invoiceService = new InvoiceService(invoiceRepository)
+    InvoiceListMapper invoiceListMapper = Mock()
+    def invoiceService = new InvoiceService(invoiceRepository, invoiceListMapper)
 
     def "should save invoice in to database"() {
         setup:
@@ -77,7 +79,6 @@ class InvoiceServiceTest extends Specification {
         setup:
         invoiceRepository.findById(invoice.getInvoiceId()) >> Optional.of(invoice)
         invoiceRepository.findAll() >> []
-        def invoiceService = new InvoiceService(invoiceRepository)
 
         when:
         def result = invoiceService.delete(invoice.getInvoiceId())

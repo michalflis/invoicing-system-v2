@@ -1,6 +1,5 @@
 package pl.futurecollars.invoicing.controllers.company;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import pl.futurecollars.invoicing.dto.CompanyListDto;
 import pl.futurecollars.invoicing.model.Company;
 import pl.futurecollars.invoicing.service.company.CompanyService;
 
@@ -31,7 +31,14 @@ public class CompanyController implements CompanyControllerApi {
     public ResponseEntity<List<Company>> getAll() {
         log.debug("Getting all companies from Database");
         return ResponseEntity.ok()
-            .body(new ArrayList<>(companyService.getAll()));
+            .body(companyService.getAll());
+    }
+
+    @Override
+    public ResponseEntity<List<CompanyListDto>> getList() {
+        log.debug("Getting short list of all companies from Database");
+        return ResponseEntity.ok()
+            .body(companyService.getList());
     }
 
     @Override
