@@ -1,0 +1,320 @@
+<h1>{{this.edit ? "Update Invoice" : "Invoice Details"}}</h1>
+<br>
+<br>
+<button *ngIf="!this.edit && !this.create" class="btn btn-primary" (click)="this.edit = true">Edit</button>
+<button *ngIf="this.edit && this.create" class="btn btn-danger" routerLink="/invoices/list" routerLinkActive="active">Cancel</button>
+<button *ngIf="this.edit && !this.create" class="btn btn-danger" (click)="cancel()">Cancel</button>
+&nbsp;
+<button *ngIf="!this.edit && !this.create" class="btn btn-dark"  routerLink="/invoices/list" routerLinkActive="active">Go Back</button>
+<button *ngIf="this.edit && this.create" class="btn btn-warning" (click)="saveInvoice()">Save</button>
+<button *ngIf="this.edit && !this.create" class="btn btn-warning" (click)="updateInvoice()">Save</button>
+<br>
+<br>
+<div class="container border">
+  <br>
+  <form #invoiceForm [formGroup]="topFormGroup">
+    <div>
+      <div class="row" *ngIf="this.edit">
+        <div class="col-2 fw-bold" style="text-align: left;">
+          Select Issuer:
+        </div>
+        <div class="col-5">
+          <select name="issuerId" [(ngModel)]="selectedIssuer" (ngModelChange)="updateIssuer(selectedIssuer)"
+                  class="form-select form-select-sm"
+                  aria-label="Select Issuer" formControlName="issuerId" type="text" id="issuerId">
+            <option value="" disabled>Select Issuer...</option>
+            <option *ngFor="let issuer of companyList" [value]="issuer.companyId">
+              {{issuer.name}} - {{issuer.taxIdentificationNumber}}
+            </option>
+          </select>
+        </div>
+        <div class="col-1">
+        </div>
+
+        <div class="col fw-bold" style="text-align: right;">
+          Invoice Number:
+        </div>
+        <div class="col form-group">
+          <input class="form-control" type="text" id="invoiceNumber" name="invoiceNumber"
+                 [value]="invoice.invoiceNumber"
+                 formControlName="invoiceNumber">
+        </div>
+      </div>
+      <div class="row" *ngIf="!this.edit">
+        <div class="col-3 fw-bold" style="text-align: center;">
+          Issuer
+        </div>
+        <div class="col-6">
+        </div>
+
+        <div class="col fw-bold">
+          Invoice Number:
+        </div>
+        <div class="col">
+          {{invoice.invoiceNumber}}
+        </div>
+      </div>
+      <div class="row" *ngIf="this.edit">
+        <div class="col-1 fw-bold" style="text-align: right;">
+          Name:
+        </div>
+        <div class="col-2">
+          {{invoice.issuer.name}}
+        </div>
+        <div class="col-5"></div>
+        <div class="col fw-bold" style="text-align: right;">
+          Issue Date:
+        </div>
+        <div class="col form-group">
+          <input class="form-control" type="text" id="issueDate" name="issueDate" [value]="invoice.issueDate"
+                 formControlName="issueDate">
+        </div>
+      </div>
+      <div class="row" *ngIf="!this.edit">
+        <div class="col-1 fw-bold" style="text-align: right;">
+          Name:
+        </div>
+        <div class="col-2">
+          {{invoice.issuer.name}}
+        </div>
+        <div class="col-6"></div>
+        <div class="col fw-bold">
+          Issue Date:
+        </div>
+        <div class="col">
+          {{invoice.issueDate}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-1 fw-bold" style="text-align: right;">
+          NIP:
+        </div>
+        <div class="col-2">
+          {{invoice.issuer.taxIdentificationNumber}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-1 fw-bold" style="text-align: right;">
+          Address:
+        </div>
+        <div class="col-4">
+          {{invoice.issuer.address}}
+        </div>
+      </div>
+      <div class="row">
+        <br><br>
+      </div>
+      <div class="row" *ngIf="this.edit">
+        <div class="col-5"></div>
+        <div class="col-2 fw-bold" style="text-align: right;">
+          Select Receiver:
+        </div>
+        <div class="col-5">
+          <select name="receiverId" [(ngModel)]="selectedReceiver" (ngModelChange)="updateReceiver(selectedReceiver)"
+                  class="form-select form-select-sm"
+                  aria-label="Select Receiver" formControlName="receiverId" type="text" id="receiverId">
+            <option value="" disabled>Select Receiver...</option>
+            <option *ngFor="let receiver of companyList" [value]="receiver.companyId">
+              {{receiver.name}} - {{receiver.taxIdentificationNumber}}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="row" *ngIf="!this.edit">
+        <div class="col-6"></div>
+        <div class="col-3 fw-bold" style="text-align: center;">
+          Receiver
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6"></div>
+        <div class="col-1 fw-bold" style="text-align: right;">
+          Name:
+        </div>
+        <div class="col-2">
+          {{invoice.receiver.name}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6"></div>
+        <div class="col-1 fw-bold" style="text-align: right;">
+          NIP:
+        </div>
+        <div class="col-2">
+          {{invoice.receiver.taxIdentificationNumber}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6"></div>
+        <div class="col-1 fw-bold" style="text-align: right;">
+          Address:
+        </div>
+        <div class="col-4">
+          {{invoice.receiver.address}}
+        </div>
+      </div>
+      <div class="row" *ngIf="this.edit">
+        <div class="col"><br><br>
+        </div>
+      </div>
+      <div class="row" *ngIf="!this.edit">
+        <div class="col"><br><br></div>
+      </div>
+    </div>
+  </form>
+  <form #entryForm [formGroup]="entryFormGroup">
+    <table class="table table-bordered">
+      <thead>
+      <tr class="table-dark">
+        <th class="fw-bold" style="text-align: center;">
+          #
+        </th>
+        <th class="fw-bold" style="text-align: center;">
+          Description
+        </th>
+        <th class="fw-bold" style="text-align: center;">
+          Qty.
+        </th>
+        <th class="fw-bold" style="text-align: center;">
+          Unit
+        </th>
+        <th class="fw-bold" style="text-align: center;">
+          Price Net
+        </th>
+        <th class="fw-bold" style="text-align: center;">
+          Total Price Net
+        </th>
+        <th class="fw-bold" style="text-align: center;">
+          VAT Rate
+        </th>
+        <th class="fw-bold" style="text-align: center;">
+          VAT value
+        </th>
+        <th class="fw-bold" style="text-align: center;">
+          Amount
+        </th>
+      </tr>
+      </thead>
+      <tbody *ngIf="!this.edit">
+      <tr *ngFor="let item of invoice.entries, let i=index;">
+        <td style="text-align: center;">
+          {{i + 1}}
+        </td>
+        <td style="text-align: center;">
+          {{item.description}}
+        </td>
+        <td style="text-align: center;">
+          {{item.quantity}}
+        </td>
+        <td style="text-align: center;">
+          {{item.unit}}
+        </td>
+        <td style="text-align: center;">
+          {{item.price}}
+        </td>
+        <td style="text-align: center;">
+          {{item.totalPrice}}
+        </td>
+        <td style="text-align: center;">
+          {{item.vatRate}}
+        </td>
+        <td style="text-align: center;">
+          {{item.vatValue}}
+        </td>
+        <td style="text-align: center;">
+          {{item.totalPrice + item.vatValue}}
+        </td>
+      </tr>
+      </tbody>
+      <tbody *ngIf="this.edit">
+      <tr *ngFor="let item of invoice.entries, let i=index;">
+        <td style="text-align: center;">
+          <button type="button" class="btn btn-danger" (click)="deleteEntry(i)">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle"
+                 viewBox="0 0 16 16">
+              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+              <path d="M5.5 9a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5z"/>
+            </svg>
+          </button>
+        <td style="text-align: center;">
+          {{item.description}}
+        </td>
+        <td style="text-align: center;">
+          {{item.quantity}}
+        </td>
+        <td style="text-align: center;">
+          {{item.unit}}
+        </td>
+        <td style="text-align: center;">
+          {{item.price}}
+        </td>
+        <td style="text-align: center;">
+          N/A
+        </td>
+        <td style="text-align: center;">
+          {{item.vatRate}}
+        </td>
+        <td style="text-align: center;">
+          N/A
+        </td>
+        <td style="text-align: center;">
+          N/A
+        </td>
+        <td style="text-align: center;">
+
+        </td>
+      </tr>
+      <tr>
+        <td style="text-align: center;">
+          <button type="button" class="btn btn-dark" (click)="addEntry()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle"
+                 viewBox="0 0 16 16">
+              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+              <path
+                d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+            </svg>
+          </button>
+        </td>
+        <td class="form-group" style="text-align: center;">
+          <input class="form-control" type="text" id="description" name="description" [value]=""
+                 formControlName="description">
+        </td>
+        <td class="form-group" style="text-align: center;">
+          <input class="form-control" type="text" id="quantity" name="quantity" [value]=""
+                 formControlName="quantity">
+        </td>
+        <td class="form-group" style="text-align: center;">
+          <input class="form-control" type="text" id="unit" name="unit" [value]=""
+                 formControlName="unit">
+        </td>
+        <td class="form-group" style="text-align: center;">
+          <input class="form-control" type="text" id="price" name="price" [value]=""
+                 formControlName="price">
+        </td>
+        <td style="text-align: center;">
+          N/A
+        </td>
+        <td class="form-group" style="text-align: center;">
+          <select name="vatRate" [(ngModel)]="selectedVatRate"
+                  class="form-select form-select-sm form-control"
+                  aria-label="Select Vat Rate" formControlName="vatRate" type="text" id="vatRate">
+            <option value="" disabled>...</option>
+            <option value="VAT_23">VAT_23</option>
+            <option value="VAT_8">VAT_8</option>
+            <option value="VAT_5">VAT_5</option>
+            <option value="VAT_0">VAT_0</option>
+            <option value="VAT_ZW">VAT_ZW</option>
+          </select>
+        </td>
+        <td style="text-align: center;">
+          N/A
+        </td>
+        <td style="text-align: center;">
+          N/A
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </form>
+</div>
+

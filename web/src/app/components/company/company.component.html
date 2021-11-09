@@ -1,0 +1,66 @@
+<h1>{{this.create? "Create New Company" : "Company Details" }}</h1>
+<br>
+<br>
+<form #companyForm [formGroup]="formGroup">
+  <div class="form-group">
+    <label for="name">Company name:</label>
+    <input class="form-control" type="text" id="name" name="name" [value]="item.name" formControlName="name">
+  </div>
+  <br>
+  <div class="form-group">
+    <label for="taxId">Tax identification number:</label>
+    <input class="form-control" type="text" id="taxId" name="taxIdentificationNumber"
+           [value]="item.taxIdentificationNumber" aria-describedby="nipHelpBlock"
+           formControlName="taxIdentificationNumber">
+    <div id="nipHelpBlock" class="form-text">
+      {{this.create? "Tax Identification Number must be 10 characters long, contain only numbers, and must not contain hyphens, letters,\n" +
+      "      spaces, special characters, or emoji." : "Tax Identification Number cannot be changed." }}
+
+    </div>
+  </div>
+  <br>
+  <div class="form-group">
+    <label for="address">Address:</label>
+    <input class="form-control" type="text" id="address" name="address" [value]="item.address"
+           formControlName="address">
+  </div>
+  <br>
+  <div class="form-group">
+    <label for="healthyInsurance">Healthy insurance:</label>
+    <input [value]="item.healthyInsurance" aria-describedby="healthyHelpBlock" class="form-control"
+           formControlName="healthyInsurance"
+           id="healthyInsurance"
+           name="healthyInsurance" type="text">
+    <div id="healthyHelpBlock" class="form-text">
+      Use only dot "." as decimal separator (e.g 100.99).
+    </div>
+  </div>
+  <br>
+  <div class="form-group">
+    <label for="pensionInsurance">Pension insurance:</label>
+    <input class="form-control" type="text" id="pensionInsurance" name="pensionInsurance"
+           [value]="item.pensionInsurance"
+           aria-describedby="pensionHelpBlock" formControlName="pensionInsurance">
+    <div id="pensionHelpBlock" class="form-text">
+      Use only dot "." as decimal separator (e.g 100.99).
+    </div>
+  </div>
+  <br>
+  <div>
+    <button type="button" class="btn btn-dark" routerLink="/companies/list" routerLinkActive="active">
+      Go Back
+    </button>&nbsp;
+    <button type="button" class="btn btn-primary" (click)="save()" *ngIf="this.create">
+      Create Company
+    </button>
+    <button type="button" class="btn btn-success" (click)="goToTaxReport(item.companyId)" *ngIf="!this.create">
+      Generate Tax Report
+    </button>&nbsp;
+    <button type="button" class="btn btn-warning" (click)="update()" *ngIf="!this.create">
+      Update Company
+    </button>&nbsp;
+    <button type="button" class="btn btn-danger" (click)="delete(item.companyId)" *ngIf="!this.create">
+      Delete Company
+    </button>
+  </div>
+</form>

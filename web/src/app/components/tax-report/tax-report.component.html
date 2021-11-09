@@ -1,0 +1,72 @@
+<h1>Tax Report</h1>
+<br>
+<br>
+<table class="table table-hover">
+  <thead>
+  <tr class="table-dark" style="background-color: #000000">
+    <th>Name</th>
+    <th>Value</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td class="align-middle" style="width: 60%">Income</td>
+    <td class="align-middle">{{taxReport.income}}</td>
+  </tr>
+  <tr>
+    <td class="align-middle">Incoming Vat</td>
+    <td class="align-middle">{{taxReport.incomingVat}}</td>
+  </tr>
+  <tr>
+    <td class="align-middle">Costs</td>
+    <td class="align-middle">{{taxReport.costs}}</td>
+  </tr>
+  <tr>
+    <td class="align-middle">Outgoing Vat</td>
+    <td class="align-middle">{{taxReport.outgoingVat}}</td>
+  </tr>
+  <tr>
+    <td class="align-middle">Income - Costs</td>
+    <td class="align-middle">{{taxReport.incomeMinusCosts}}</td>
+  </tr>
+  <tr>
+    <td class="align-middle">Pension Insurance</td>
+    <td class="align-middle">{{taxReport.pensionInsurance}}</td>
+  </tr>
+  <tr>
+    <td class="align-middle">Income - Costs - Pensions Insurance</td>
+    <td class="align-middle">{{taxReport.incomeMinusCostsMinusPensionInsurance}}</td>
+  </tr>
+  <tr>
+    <td class="align-middle">Tax Calculation Base</td>
+    <td class="align-middle">{{taxReport.taxCalculationBase}}</td>
+  </tr>
+  <tr>
+    <td class="align-middle">Income Tax</td>
+    <td class="align-middle">{{taxReport.incomeTax}}</td>
+  </tr>
+  <tr>
+    <td class="align-middle">Healthy Insurance 9%</td>
+    <td class="align-middle">{{taxReport.healthInsurance9}}</td>
+  </tr>
+  <tr>
+    <td class="align-middle">Healthy Insurance 7.75%</td>
+    <td class="align-middle">{{taxReport.healthInsurance775}}</td>
+  </tr>
+  <tr>
+    <td class="align-middle">Income Tax - Healthy Insurance</td>
+    <td class="align-middle">{{taxReport.incomeTaxMinusHealthInsurance}}</td>
+  </tr>
+  <tr>
+    <td class="align-middle">Final Income Tax Value</td>
+    <td class="align-middle">{{taxReport.finalIncomeTaxValue}}</td>
+  </tr>
+  </tbody>
+</table>
+<br>
+<button type="button" class="btn btn-dark" (click)="goToCompany(company.companyId)">
+  Go to Company Details
+</button>&nbsp;
+<button type="button" class="btn btn-dark" routerLink="/companies/list" routerLinkActive="active">
+  Go to Companies List
+</button>
