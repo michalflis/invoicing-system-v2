@@ -12,7 +12,6 @@ import pl.futurecollars.invoicing.utils.JsonService
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Stepwise
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
@@ -80,8 +79,7 @@ class CompanyControllerTest extends Specification {
 
         then:
         companies.size() > 0
-        companies[0].getTaxIdentificationNumber() == companyDto.getTaxIdentificationNumber()
-    }
+     }
 
     def "should return short list of companies"() {
         when:
