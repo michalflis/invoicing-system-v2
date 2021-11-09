@@ -43,8 +43,6 @@ class CompanyControllerTest extends Specification {
     def updatedCompanyDto = new CompanyDto(updatedCompany.getCompanyId(),updatedCompany.getTaxIdentificationNumber(), updatedCompany.getAddress(),
             updatedCompany.getName(), updatedCompany.getHealthyInsurance(), updatedCompany.getPensionInsurance())
 
-
-
     @Shared
     UUID id
 
@@ -79,7 +77,8 @@ class CompanyControllerTest extends Specification {
 
         then:
         companies.size() > 0
-     }
+        companies[0].getTaxIdentificationNumber() == companyDto.getTaxIdentificationNumber()
+    }
 
     def "should return short list of companies"() {
         when:
