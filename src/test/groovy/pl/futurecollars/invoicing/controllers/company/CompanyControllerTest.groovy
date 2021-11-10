@@ -46,6 +46,11 @@ class CompanyControllerTest extends Specification {
     @Shared
     UUID id
 
+    setup() {
+
+    }
+
+
     def "should add single company"() {
         given:
         def companyAsJson = jsonService.convertToJson(companyDto)
@@ -77,7 +82,7 @@ class CompanyControllerTest extends Specification {
         companyDto.setCompanyId(companies[0].getCompanyId());
         then:
         companies.size() > 0
-        companies[0] == companyDto
+        companies.contains(companyDto)
     }
 
     def "should return short list of companies"() {

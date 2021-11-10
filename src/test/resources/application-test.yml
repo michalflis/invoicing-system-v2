@@ -3,7 +3,7 @@ invoicing-system:
 
 spring:
   datasource:
-    url: jdbc:h2:mem:db-jpa;DB_CLOSE_DELAY=-1
+    url: jdbc:h2:mem:db-jpa;
     username: sa
     password:
     driver-class-name: org.h2.Driver
