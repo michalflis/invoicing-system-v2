@@ -46,11 +46,6 @@ class CompanyControllerTest extends Specification {
     @Shared
     UUID id
 
-    setup() {
-
-    }
-
-
     def "should add single company"() {
         given:
         def companyAsJson = jsonService.convertToJson(companyDto)
