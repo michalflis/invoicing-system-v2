@@ -38,9 +38,9 @@ class CompanyControllerTest extends Specification {
     @Shared
     def company = CompanyFixture.company(1)
     def updatedCompany = CompanyFixture.company(1)
-    def companyDto = new CompanyDto(company.getCompanyId(),company.getTaxIdentificationNumber(), company.getAddress(),
+    def companyDto = new CompanyDto(company.getCompanyId(), company.getTaxIdentificationNumber(), company.getAddress(),
             company.getName(), company.getHealthyInsurance(), company.getPensionInsurance())
-    def updatedCompanyDto = new CompanyDto(updatedCompany.getCompanyId(),updatedCompany.getTaxIdentificationNumber(), updatedCompany.getAddress(),
+    def updatedCompanyDto = new CompanyDto(updatedCompany.getCompanyId(), updatedCompany.getTaxIdentificationNumber(), updatedCompany.getAddress(),
             updatedCompany.getName(), updatedCompany.getHealthyInsurance(), updatedCompany.getPensionInsurance())
 
     @Shared
@@ -74,10 +74,10 @@ class CompanyControllerTest extends Specification {
                 .contentAsString
 
         def companies = jsonListService.convertToObject(response, CompanyDto[].class)
-
+        companyDto.setCompanyId(companies[0].getCompanyId());
         then:
         companies.size() > 0
-        companies[0].getTaxIdentificationNumber() == companyDto.getTaxIdentificationNumber()
+        companies[0] == companyDto
     }
 
     def "should return short list of companies"() {
