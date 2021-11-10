@@ -39,7 +39,6 @@ public class Company {
 
     @ApiModelProperty(value = "Company pension insurance amount", required = true, example = "500.25")
     private BigDecimal pensionInsurance;
-
 }
 
 
