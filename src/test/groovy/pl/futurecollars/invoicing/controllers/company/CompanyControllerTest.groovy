@@ -8,6 +8,7 @@ import org.springframework.test.web.servlet.MockMvc
 import pl.futurecollars.invoicing.dto.CompanyDto
 import pl.futurecollars.invoicing.dto.mappers.CompanyMapper
 import pl.futurecollars.invoicing.fixtures.CompanyFixture
+import pl.futurecollars.invoicing.service.company.CompanyService
 import pl.futurecollars.invoicing.utils.JsonService
 import spock.lang.Shared
 import spock.lang.Specification
@@ -35,6 +36,9 @@ class CompanyControllerTest extends Specification {
     @Autowired
     private CompanyMapper companyMapper
 
+    @Autowired
+    private CompanyService companyService
+
     @Shared
     def company = CompanyFixture.company(1)
     def updatedCompany = CompanyFixture.company(1)
@@ -48,6 +52,7 @@ class CompanyControllerTest extends Specification {
 
     def "should add single company"() {
         given:
+        companyService.clear()
         def companyAsJson = jsonService.convertToJson(companyDto)
 
         when:
