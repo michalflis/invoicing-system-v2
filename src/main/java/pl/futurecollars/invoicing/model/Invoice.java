@@ -37,12 +37,12 @@ public class Invoice {
     @ApiModelProperty(value = "Invoice issue date", required = true, example = "2021-09-30")
     private LocalDate issueDate;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "issuer_id")
     @ApiModelProperty(value = "Issuer", required = true)
     private Company issuer;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "receiver_id")
     @ApiModelProperty(value = "Receiver", required = true)
     private Company receiver;
