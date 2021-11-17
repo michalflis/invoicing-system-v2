@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {environment} from "../../environments/environment";
 import {InvoiceListDto} from "../dto/invoice-list.dto";
@@ -9,6 +9,11 @@ import {InvoiceDto} from "../dto/invoice.dto";
   providedIn: 'root'
 })
 export class InvoiceService {
+
+  private options = {
+    headers: new HttpHeaders({'content-type':'application/json'}),
+    withCredentials: true
+  }
 
   constructor(private httpClient: HttpClient) {
   }
@@ -22,15 +27,15 @@ export class InvoiceService {
   }
 
   public deleteInvoice(id: string): Observable<any> {
-    return this.httpClient.delete(`${environment.apiBasePath}/invoices/${id}`)
+    return this.httpClient.delete(`${environment.apiBasePath}/invoices/${id}`, this.options)
   }
 
   public updateInvoice(data: InvoiceDto): Observable<InvoiceDto> {
-    return this.httpClient.put<InvoiceDto>(`${environment.apiBasePath}/invoices`, data)
+    return this.httpClient.put<InvoiceDto>(`${environment.apiBasePath}/invoices`, data, this.options)
   }
 
   public saveInvoice(data: InvoiceDto): Observable<InvoiceDto> {
-    return this.httpClient.post<InvoiceDto>(`${environment.apiBasePath}/invoices`, data)
+    return this.httpClient.post<InvoiceDto>(`${environment.apiBasePath}/invoices`, data, this.options)
   }
 
 }

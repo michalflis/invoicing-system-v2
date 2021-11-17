@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
+import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.web.servlet.MockMvc
 import pl.futurecollars.invoicing.dto.CompanyDto
 import pl.futurecollars.invoicing.dto.mappers.CompanyMapper
@@ -13,12 +14,15 @@ import pl.futurecollars.invoicing.utils.JsonService
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Stepwise
+
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
+@WithMockUser
 @SpringBootTest
 @Stepwise
 @AutoConfigureMockMvc
@@ -57,7 +61,7 @@ class CompanyControllerTest extends Specification {
 
         when:
         def response = mockMvc.perform(
-                post("/companies").content(companyAsJson).contentType(MediaType.APPLICATION_JSON))
+                post("/companies").content(companyAsJson).contentType(MediaType.APPLICATION_JSON).with(csrf()))
                 .andExpect(status().isOk())
                 .andReturn()
                 .response
@@ -72,7 +76,7 @@ class CompanyControllerTest extends Specification {
 
     def "should return list of companies"() {
         when:
-        def response = mockMvc.perform(get("/companies"))
+        def response = mockMvc.perform(get("/companies").with(csrf()))
                 .andExpect(status().isOk())
                 .andReturn()
                 .response
@@ -104,7 +108,7 @@ class CompanyControllerTest extends Specification {
 
         when:
         def response = mockMvc.perform(
-                put("/companies").content(updatedInvoiceAsJson).contentType(MediaType.APPLICATION_JSON))
+                put("/companies").content(updatedInvoiceAsJson).contentType(MediaType.APPLICATION_JSON).with(csrf()))
                 .andExpect(status().isOk())
                 .andReturn()
                 .response
@@ -116,7 +120,7 @@ class CompanyControllerTest extends Specification {
 
     def "should return updatedCompany by id"() {
         when:
-        def response = mockMvc.perform(get("/companies/" + id))
+        def response = mockMvc.perform(get("/companies/" + id).with(csrf()))
                 .andExpect(status().isOk())
                 .andReturn()
                 .response
@@ -128,7 +132,7 @@ class CompanyControllerTest extends Specification {
 
     def "should delete company by id"() {
         when:
-        def response = mockMvc.perform(delete("/companies/" + id))
+        def response = mockMvc.perform(delete("/companies/" + id).with(csrf()))
                 .andExpect(status().isOk())
                 .andReturn()
                 .response
@@ -140,7 +144,7 @@ class CompanyControllerTest extends Specification {
 
     def "should return empty list of companies"() {
         when:
-        def response = mockMvc.perform(get("/companies"))
+        def response = mockMvc.perform(get("/companies").with(csrf()))
                 .andExpect(status().isOk())
                 .andReturn()
                 .response
