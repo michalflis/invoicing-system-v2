@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
+import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.web.servlet.MockMvc
 import pl.futurecollars.invoicing.fixtures.InvoiceFixture
 import pl.futurecollars.invoicing.model.Invoice
@@ -12,12 +13,14 @@ import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Stepwise
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
+@WithMockUser
 @SpringBootTest
 @Stepwise
 @AutoConfigureMockMvc
@@ -44,7 +47,7 @@ class InvoiceControllerBasicTest extends Specification {
 
         when:
         def response = mockMvc.perform(
-                post("/invoices").content(invoiceAsJson).contentType(MediaType.APPLICATION_JSON))
+                post("/invoices").content(invoiceAsJson).contentType(MediaType.APPLICATION_JSON).with(csrf()))
                 .andExpect(status().isOk())
                 .andReturn()
                 .response
@@ -62,7 +65,7 @@ class InvoiceControllerBasicTest extends Specification {
 
     def "should return list of invoices"() {
         when:
-        def response = mockMvc.perform(get("/invoices"))
+        def response = mockMvc.perform(get("/invoices").with(csrf()))
                 .andExpect(status().isOk())
                 .andReturn()
                 .response
@@ -77,7 +80,7 @@ class InvoiceControllerBasicTest extends Specification {
 
     def "should return short list of invoices"() {
         when:
-        def response = mockMvc.perform(get("/invoices/list"))
+        def response = mockMvc.perform(get("/invoices/list").with(csrf()))
                 .andExpect(status().isOk())
                 .andReturn()
                 .response
@@ -97,7 +100,7 @@ class InvoiceControllerBasicTest extends Specification {
 
         when:
         def response = mockMvc.perform(
-                put("/invoices").content(updatedInvoiceAsJson).contentType(MediaType.APPLICATION_JSON))
+                put("/invoices").content(updatedInvoiceAsJson).contentType(MediaType.APPLICATION_JSON).with(csrf()))
                 .andExpect(status().isOk())
                 .andReturn()
                 .response
@@ -112,7 +115,7 @@ class InvoiceControllerBasicTest extends Specification {
         def id = updatedInvoice.getInvoiceId()
 
         when:
-        def response = mockMvc.perform(get("/invoices/" + id))
+        def response = mockMvc.perform(get("/invoices/" + id).with(csrf()))
                 .andExpect(status().isOk())
                 .andReturn()
                 .response
@@ -127,7 +130,7 @@ class InvoiceControllerBasicTest extends Specification {
         def id = updatedInvoice.getInvoiceId()
 
         when:
-        def response = mockMvc.perform(delete("/invoices/" + id))
+        def response = mockMvc.perform(delete("/invoices/" + id).with(csrf()))
                 .andExpect(status().isOk())
                 .andReturn()
                 .response
@@ -139,7 +142,7 @@ class InvoiceControllerBasicTest extends Specification {
 
     def "should return empty list of invoices"() {
         when:
-        def response = mockMvc.perform(get("/invoices"))
+        def response = mockMvc.perform(get("/invoices").with(csrf()))
                 .andExpect(status().isOk())
                 .andReturn()
                 .response

@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {CompanyListDto} from "../dto/company-list.dto";
 import {Observable} from "rxjs";
 import {CompanyDto} from "../dto/company.dto";
@@ -9,6 +9,11 @@ import {environment} from "../../environments/environment";
   providedIn: 'root'
 })
 export class CompanyService {
+
+  private options = {
+    headers: new HttpHeaders({'content-type':'application/json'}),
+    withCredentials: true
+  }
 
   constructor(private httpClient: HttpClient) {
   }
@@ -22,15 +27,15 @@ export class CompanyService {
   }
 
   public deleteCompany(id: string): Observable<any> {
-    return this.httpClient.delete(`${environment.apiBasePath}/companies/${id}`)
+    return this.httpClient.delete(`${environment.apiBasePath}/companies/${id}`, this.options)
   }
 
   public updateCompany(data: CompanyDto): Observable<CompanyDto> {
-    return this.httpClient.put<CompanyDto>(`${environment.apiBasePath}/companies`, data)
+    return this.httpClient.put<CompanyDto>(`${environment.apiBasePath}/companies`, data, this.options)
   }
 
   public saveCompany(data: CompanyDto): Observable<CompanyDto> {
-    return this.httpClient.post<CompanyDto>(`${environment.apiBasePath}/companies`, data)
+    return this.httpClient.post<CompanyDto>(`${environment.apiBasePath}/companies`, data, this.options)
   }
 
 }

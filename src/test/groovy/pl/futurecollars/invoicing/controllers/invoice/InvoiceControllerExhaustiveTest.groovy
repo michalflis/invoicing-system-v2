@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
+import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.web.servlet.MockMvc
 import pl.futurecollars.invoicing.fixtures.InvoiceFixture
 import pl.futurecollars.invoicing.model.Invoice
@@ -12,13 +13,14 @@ import pl.futurecollars.invoicing.utils.JsonService
 import spock.lang.Shared
 import spock.lang.Specification
 
-
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
+@WithMockUser
 @SpringBootTest
 @AutoConfigureMockMvc
 class InvoiceControllerExhaustiveTest extends Specification {
@@ -52,15 +54,15 @@ class InvoiceControllerExhaustiveTest extends Specification {
 
         expect:
         mockMvc.perform(
-                post("/invoices").content(invoiceAsJson).contentType(MediaType.APPLICATION_JSON))
+                post("/invoices").content(invoiceAsJson).contentType(MediaType.APPLICATION_JSON).with(csrf()))
                 .andExpect(status().isOk())
 
         mockMvc.perform(
-                post("/invoices").content(invoice1AsJson).contentType(MediaType.APPLICATION_JSON))
+                post("/invoices").content(invoice1AsJson).contentType(MediaType.APPLICATION_JSON).with(csrf()))
                 .andExpect(status().isOk())
 
         mockMvc.perform(
-                post("/invoices").content(invoice2AsJson).contentType(MediaType.APPLICATION_JSON))
+                post("/invoices").content(invoice2AsJson).contentType(MediaType.APPLICATION_JSON).with(csrf()))
                 .andExpect(status().isOk())
     }
 
@@ -71,14 +73,14 @@ class InvoiceControllerExhaustiveTest extends Specification {
 
         when:
         mockMvc.perform(
-                post("/invoices").content(invoiceAsJson).contentType(MediaType.APPLICATION_JSON))
+                post("/invoices").content(invoiceAsJson).contentType(MediaType.APPLICATION_JSON).with(csrf()))
                 .andExpect(status().isOk())
 
         mockMvc.perform(
-                post("/invoices").content(invoice1AsJson).contentType(MediaType.APPLICATION_JSON))
+                post("/invoices").content(invoice1AsJson).contentType(MediaType.APPLICATION_JSON).with(csrf()))
                 .andExpect(status().isOk())
 
-        def response = mockMvc.perform(get("/invoices"))
+        def response = mockMvc.perform(get("/invoices").with(csrf()))
                 .andExpect(status().isOk())
                 .andReturn()
                 .response
@@ -96,7 +98,7 @@ class InvoiceControllerExhaustiveTest extends Specification {
 
         when:
         def postResponse = mockMvc.perform(
-                post("/invoices").content(invoiceAsJson).contentType(MediaType.APPLICATION_JSON))
+                post("/invoices").content(invoiceAsJson).contentType(MediaType.APPLICATION_JSON).with(csrf()))
                 .andExpect(status().isOk())
                 .andReturn()
                 .response
@@ -118,7 +120,7 @@ class InvoiceControllerExhaustiveTest extends Specification {
         def updatedInvoiceAsJson = jsonService.convertToJson(updatedInvoice)
 
         mockMvc.perform(
-                put("/invoices").content(updatedInvoiceAsJson).contentType(MediaType.APPLICATION_JSON))
+                put("/invoices").content(updatedInvoiceAsJson).contentType(MediaType.APPLICATION_JSON).with(csrf()))
                 .andExpect(status().isOk())
 
         def response = mockMvc.perform(get("/invoices"))
@@ -140,7 +142,7 @@ class InvoiceControllerExhaustiveTest extends Specification {
 
         when:
         def postResponse = mockMvc.perform(
-                post("/invoices").content(invoiceAsJson).contentType(MediaType.APPLICATION_JSON))
+                post("/invoices").content(invoiceAsJson).contentType(MediaType.APPLICATION_JSON).with(csrf()))
                 .andExpect(status().isOk())
                 .andReturn()
                 .response
@@ -158,13 +160,13 @@ class InvoiceControllerExhaustiveTest extends Specification {
         }
 
         def deleteResponse = mockMvc.perform(
-                delete("/invoices/" + updatedId))
+                delete("/invoices/" + updatedId).with(csrf()))
                 .andExpect(status().isOk())
                 .andReturn()
                 .response
                 .contentAsString
 
-        def response = mockMvc.perform(get("/invoices"))
+        def response = mockMvc.perform(get("/invoices").with(csrf()))
                 .andExpect(status().isOk())
                 .andReturn()
                 .response
@@ -185,21 +187,21 @@ class InvoiceControllerExhaustiveTest extends Specification {
 
         when:
         def postResponse = mockMvc.perform(
-                post("/invoices").content(invoiceAsJson).contentType(MediaType.APPLICATION_JSON))
+                post("/invoices").content(invoiceAsJson).contentType(MediaType.APPLICATION_JSON).with(csrf()))
                 .andExpect(status().isOk())
                 .andReturn()
                 .response
                 .contentAsString
 
         def post1Response = mockMvc.perform(
-                post("/invoices").content(invoice1AsJson).contentType(MediaType.APPLICATION_JSON))
+                post("/invoices").content(invoice1AsJson).contentType(MediaType.APPLICATION_JSON).with(csrf()))
                 .andExpect(status().isOk())
                 .andReturn()
                 .response
                 .contentAsString
 
         def post2Response = mockMvc.perform(
-                post("/invoices").content(invoice2AsJson).contentType(MediaType.APPLICATION_JSON))
+                post("/invoices").content(invoice2AsJson).contentType(MediaType.APPLICATION_JSON).with(csrf()))
                 .andExpect(status().isOk())
                 .andReturn()
                 .response
@@ -213,13 +215,13 @@ class InvoiceControllerExhaustiveTest extends Specification {
         invoice2.setInvoiceId(id2)
 
         def deleteResponse = mockMvc.perform(
-                delete("/invoices/" + id1))
+                delete("/invoices/" + id1).with(csrf()))
                 .andExpect(status().isOk())
                 .andReturn()
                 .response
                 .contentAsString
 
-        def response = mockMvc.perform(get("/invoices"))
+        def response = mockMvc.perform(get("/invoices").with(csrf()))
                 .andExpect(status().isOk())
                 .andReturn()
                 .response

@@ -4,23 +4,23 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
+import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.web.servlet.MockMvc
 import pl.futurecollars.invoicing.fixtures.CompanyFixture
 import pl.futurecollars.invoicing.fixtures.InvoiceFixture
 import pl.futurecollars.invoicing.model.Company
 import pl.futurecollars.invoicing.model.Invoice
 import pl.futurecollars.invoicing.model.TaxReport
-import pl.futurecollars.invoicing.service.company.CompanyService
 import pl.futurecollars.invoicing.service.invoice.InvoiceService
 import pl.futurecollars.invoicing.utils.JsonService
 import spock.lang.Shared
 import spock.lang.Specification
-
 import java.math.RoundingMode
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf
 
+@WithMockUser
 @SpringBootTest
 @AutoConfigureMockMvc
 class TaxCalculatorControllerTest extends Specification {
@@ -65,11 +65,12 @@ class TaxCalculatorControllerTest extends Specification {
         def invoice1AsJson = jsonServiceInvoice.convertToJson(invoice1)
 
         mockMvc.perform(
-                post("/invoices").content(invoiceAsJson).contentType(MediaType.APPLICATION_JSON))
+                post("/invoices").content(invoiceAsJson).contentType(MediaType.APPLICATION_JSON).with(csrf()))
                 .andExpect(status().isOk())
 
+
         mockMvc.perform(
-                post("/invoices").content(invoice1AsJson).contentType(MediaType.APPLICATION_JSON))
+                post("/invoices").content(invoice1AsJson).contentType(MediaType.APPLICATION_JSON).with(csrf()))
                 .andExpect(status().isOk())
 
         def updatedCompanyAsJson = jsonServiceCompany.convertToJson(company)
@@ -93,7 +94,7 @@ class TaxCalculatorControllerTest extends Specification {
 
         when:
         def response = mockMvc.perform(
-                post("/tax").content(updatedCompanyAsJson).contentType(MediaType.APPLICATION_JSON))
+                post("/tax").content(updatedCompanyAsJson).contentType(MediaType.APPLICATION_JSON).with(csrf()))
                 .andExpect(status().isOk())
                 .andReturn()
                 .response
